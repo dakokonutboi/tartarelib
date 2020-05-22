@@ -1,27 +1,14 @@
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.primitives import serialization
+import rsa
 
-private_key = rsa.generate_private_key(
-    public_exponent=65537,
-    key_size=2048,
-    backend=default_backend()
-)
-public_key = private_key.public_key()
+(pub, priv) = rsa.newkeys(2048)
 
-pem = private_key.private_bytes(
-    encoding=serialization.Encoding.PEM,
-    format=serialization.PrivateFormat.PKCS8,
-    encryption_algorithm=serialization.NoEncryption()
-)
+pubex = str(pub)
+privex = str(priv)
 
-with open('tartare_private_key.pem', 'wb') as f:
-    f.write(pem)
+pubfile = open("tartare_public_key.tart", "w")
+pubfile.write(pubex)
+pubfile.close()
 
-pem = public_key.public_bytes(
-    encoding=serialization.Encoding.PEM,
-    format=serialization.PublicFormat.SubjectPublicKeyInfo
-)
-
-with open('tartare_public_key.pem', 'wb') as f:
-    f.write(pem)
+privfile = open("tartare_private_key.tart", "w")
+privfile.write(privex)
+privfile.close()
